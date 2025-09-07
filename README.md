@@ -1,3 +1,8 @@
+## Reference: 
+- https://informatika.stei.itb.ac.id/~rinaldi.munir/Citra/2022-2023/Makalah/Makalah-IF4073-Citra-Sem1-2022%20(9).pdf
+- https://www.geeksforgeeks.org/python/histogram-matching-with-opencv-scikit-image-and-python/
+- https://mrizqi.notion.site/PCD-26-Agustus-2024-POLBAN-ddb7ef6670714a069ab533366eb57658
+
 # FastAPI OpenCV Image Processor
 
 Aplikasi web untuk pemrosesan citra digital menggunakan FastAPI dan OpenCV dengan fitur crop otomatis untuk operasi bitwise.
