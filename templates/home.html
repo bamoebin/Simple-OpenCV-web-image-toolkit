@@ -2,20 +2,9 @@
 %}
 <div class="container mt-5">
   <h2 class="text-center">Unggah Citra Digital untuk Operasi yang Tersediaa</h2>
-  <form
-    action="/upload/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
+  <form action="/upload/" enctype="multipart/form-data" method="post" class="mt-4">
     <div class="mb-3">
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
+      <input name="file" type="file" accept="image/*" class="form-control" required />
     </div>
     <div class="text-center">
       <input type="submit" value="Upload" class="btn btn-primary" />
@@ -23,21 +12,10 @@
   </form>
 
   <h2 class="text-center mt-5">Operasi Aritmatika pada Citra</h2>
-  <form
-    action="/operation/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
+  <form action="/operation/" enctype="multipart/form-data" method="post" class="mt-4">
     <div class="mb-3">
       <label for="file">Pilih Gambar:</label>
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
+      <input name="file" type="file" accept="image/*" class="form-control" required />
     </div>
     <div class="mb-3">
       <label for="operation">Pilih Operasi:</label>
@@ -50,18 +28,20 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="value">Nilai Operasi (Range):</label>
-      <input
-        type="range"
-        class="form-range"
-        min="0"
-        max="100"
-        step="1"
-        name="value"
-        id="value"
-        value="50"
-      />
-      <output id="valueOutput" class="form-text">50</output>
+      <label for="value" class="form-label">Nilai Operasi:</label>
+      <div class="d-flex justify-content-between text-muted small mb-1">
+        <span>0 (Min)</span>
+        <span>50 (Default)</span>
+        <span>100 (Max)</span>
+      </div>
+      <input type="range" class="form-range" min="0" max="100" step="1" name="value" id="value" value="50" />
+      <div class="text-center mt-2">
+        <span class="badge bg-primary">Nilai Terpilih: <output id="valueOutput">50</output></span>
+      </div>
+      <div class="form-text">
+        <small><i class="fas fa-info-circle"></i> Nilai ini akan ditambahkan/dikurangkan pada setiap pixel citra (untuk
+          Add/Subtract) atau digunakan sebagai threshold (untuk Max/Min)</small>
+      </div>
     </div>
     <div class="text-center">
       <input type="submit" value="Lakukan Operasi" class="btn btn-primary" />
@@ -69,71 +49,32 @@
   </form>
 
   <h2 class="text-center mt-5">Operasi Logika pada Citra</h2>
-  <form
-    action="/logic_operation/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
-    <div class="mb-3">
-      <label for="file1">Pilih Gambar 1:</label>
-      <input
-        name="file1"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="mb-3">
-      <label for="file2">Pilih Gambar 2 (Untuk operasi AND dan XOR):</label>
-      <input name="file2" type="file" accept="image/*" class="form-control" />
-    </div>
-    <div class="mb-3">
-      <label for="operation">Pilih Operasi:</label>
-      <select name="operation" class="form-select" required>
-        <option value="not">NOT</option>
-        <option value="and">AND</option>
-        <option value="xor">XOR</option>
-      </select>
-    </div>
-    <div class="text-center">
-      <input
-        type="submit"
-        value="Lakukan Operasi Logika"
-        class="btn btn-primary"
-      />
-    </div>
-  </form>
+  <div class="text-center mt-4">
+    <a href="/logic_operation_form/" class="btn btn-primary btn-lg">
+      <i class="fas fa-calculator"></i> KLIK DI SINI untuk Operasi Logika (AND, XOR, NOT)
+    </a>
+    <p class="text-muted mt-2">Operasi bitwise dengan handling otomatis untuk dimensi berbeda</p>
+  </div>
+</div>
+</form>
 
-  <h2 class="text-center mt-5">Statistik Citra</h2>
-  <form
-    action="/statistics/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
-    <div class="mb-3">
-      <label for="file">Pilih Gambar:</label>
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="text-center">
-      <input type="submit" value="Hitung Statistik" class="btn btn-primary" />
-    </div>
-  </form>
+<h2 class="text-center mt-5">Statistik Citra</h2>
+<form action="/statistics/" enctype="multipart/form-data" method="post" class="mt-4">
+  <div class="mb-3">
+    <label for="file">Pilih Gambar:</label>
+    <input name="file" type="file" accept="image/*" class="form-control" required />
+  </div>
+  <div class="text-center">
+    <input type="submit" value="Hitung Statistik" class="btn btn-primary" />
+  </div>
+</form>
 
-  <script>
-    const slider = document.getElementById("value");
-    const output = document.getElementById("valueOutput");
-    slider.addEventListener("input", function () {
-      output.textContent = slider.value;
-    });
-  </script>
+<script>
+  const slider = document.getElementById("value");
+  const output = document.getElementById("valueOutput");
+  slider.addEventListener("input", function () {
+    output.textContent = slider.value;
+  });
+</script>
 </div>
 {% endblock %}

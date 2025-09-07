@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Logic Operations{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Operasi Logika Bitwise</h2>
+    <p class="text-center text-muted">Lakukan operasi logika (AND, XOR, NOT) pada citra digital</p>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-calculator"></i> Form Operasi Logika</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/logic_operation/" enctype="multipart/form-data" method="post">
+                        <div class="mb-3">
+                            <label for="file1" class="form-label">Gambar Pertama *</label>
+                            <input name="file1" type="file" accept="image/*" class="form-control" required>
+                            <div class="form-text">Upload gambar utama untuk operasi logika</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="operation" class="form-label">Pilih Operasi *</label>
+                            <select name="operation" class="form-select" required onchange="toggleSecondImage()">
+                                <option value="">-- Pilih Operasi --</option>
+                                <option value="and">AND - Intersection (memerlukan 2 gambar)</option>
+                                <option value="xor">XOR - Difference (memerlukan 2 gambar)</option>
+                                <option value="not">NOT - Negasi/Inverse (1 gambar)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="file2Container" style="display: none;">
+                            <label for="file2" class="form-label">Gambar Kedua</label>
+                            <input name="file2" type="file" accept="image/*" class="form-control">
+                            <div class="form-text">Upload gambar kedua untuk operasi AND/XOR</div>
+                        </div>
+
+                        <div class="alert alert-info" role="alert">
+                            <h6><i class="fas fa-info-circle"></i> Informasi Penting:</h6>
+                            <ul class="mb-0">
+                                <li><strong>AND:</strong> Menghasilkan pixel yang ada di kedua gambar</li>
+                                <li><strong>XOR:</strong> Menampilkan perbedaan antara kedua gambar</li>
+                                <li><strong>NOT:</strong> Membalik/menginverse nilai pixel gambar</li>
+                                <li><strong>Dimensi Berbeda:</strong> Jika kedua gambar memiliki ukuran berbeda, sistem akan secara otomatis melakukan crop dari bagian tengah ke ukuran terkecil</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Proses Operasi
+                            </button>
+                            <a href="/" class="btn btn-secondary ms-2">
+                                <i class="fas fa-home"></i> Kembali
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6><i class="fas fa-book"></i> Penjelasan Operasi Logika</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Operasi AND</h6>
+                            <p class="small">Menghasilkan pixel dengan nilai 1 hanya jika kedua pixel input bernilai 1. Berguna untuk masking dan intersection.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Operasi XOR</h6>
+                            <p class="small">Menghasilkan pixel dengan nilai 1 jika salah satu input bernilai 1, tetapi tidak keduanya. Ideal untuk deteksi perbedaan.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Operasi NOT</h6>
+                            <p class="small">Membalik semua bit pixel (0 menjadi 1, 1 menjadi 0), menghasilkan efek negatif pada gambar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleSecondImage() {
+    const operation = document.querySelector('select[name="operation"]').value;
+    const file2Container = document.getElementById('file2Container');
+    const file2Input = document.querySelector('input[name="file2"]');
+    
+    if (operation === 'and' || operation === 'xor') {
+        file2Container.style.display = 'block';
+        file2Input.required = true;
+    } else {
+        file2Container.style.display = 'none';
+        file2Input.required = false;
+        file2Input.value = '';
+    }
+}
+</script>
+{% endblock %}

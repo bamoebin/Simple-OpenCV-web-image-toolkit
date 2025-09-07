@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Logic Operation Result{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Hasil Operasi {{ operation }}</h2>
+    
+    {% if dimension_mismatch %}
+    <div class="alert alert-warning" role="alert">
+        <h5><i class="fas fa-exclamation-triangle"></i> Perbedaan Dimensi Terdeteksi!</h5>
+        <p><strong>Dimensi Gambar 1:</strong> {{ original_dim1 }} pixels</p>
+        <p><strong>Dimensi Gambar 2:</strong> {{ original_dim2 }} pixels</p>
+        <p><strong>Solusi:</strong> Kedua gambar telah di-crop secara otomatis ke dimensi: <strong>{{ cropped_dim }}</strong> pixels untuk memungkinkan operasi bitwise.</p>
+        <p><small><i class="fas fa-info-circle"></i> Crop dilakukan dari bagian tengah kedua gambar untuk mempertahankan area yang paling penting.</small></p>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <!-- Gambar Original 1 -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gambar 1 (Original)</h5>
+                    {% if dimension_mismatch %}
+                    <small class="text-muted">Dimensi: {{ original_dim1 }}</small>
+                    {% endif %}
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ original_image_path }}" alt="Original Image 1" class="img-fluid" style="max-height: 300px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Gambar Original 2 -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gambar 2 (Original)</h5>
+                    {% if dimension_mismatch %}
+                    <small class="text-muted">Dimensi: {{ original_dim2 }}</small>
+                    {% endif %}
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ img2_path }}" alt="Original Image 2" class="img-fluid" style="max-height: 300px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if dimension_mismatch %}
+    <div class="row">
+        <!-- Gambar 1 Cropped -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5>Gambar 1 (Cropped)</h5>
+                    <small>Dimensi: {{ cropped_dim }}</small>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ img1_cropped_path }}" alt="Cropped Image 1" class="img-fluid" style="max-height: 300px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Gambar 2 Cropped -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5>Gambar 2 (Cropped)</h5>
+                    <small>Dimensi: {{ cropped_dim }}</small>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ img2_cropped_path }}" alt="Cropped Image 2" class="img-fluid" style="max-height: 300px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Hasil Operasi -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5><i class="fas fa-star"></i> Hasil Operasi {{ operation }}</h5>
+                    {% if dimension_mismatch %}
+                    <small>Dimensi: {{ cropped_dim }}</small>
+                    {% endif %}
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ modified_image_path }}" alt="Result Image" class="img-fluid" style="max-height: 400px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-home"></i> Kembali ke Home
+        </a>
+        <a href="/logic_operation_form/" class="btn btn-secondary">
+            <i class="fas fa-redo"></i> Operasi Logika Lain
+        </a>
+    </div>
+
+    {% if dimension_mismatch %}
+    <div class="mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h6><i class="fas fa-lightbulb"></i> Informasi Teknis</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><strong>Operasi:</strong> {{ operation }} Bitwise</li>
+                    <li><strong>Metode Crop:</strong> Center Crop (dari bagian tengah)</li>
+                    <li><strong>Alasan Crop:</strong> Operasi bitwise memerlukan dimensi yang sama persis</li>
+                    <li><strong>Strategi:</strong> Mengambil dimensi terkecil dari kedua gambar</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -87,6 +87,13 @@ async def perform_logic_operation(
 
     if operation == "not":
         result_img = cv2.bitwise_not(img1)
+        modified_path = save_image(result_img, "modified")
+        
+        return templates.TemplateResponse("result.html", {
+            "request": request,
+            "original_image_path": original_path,
+            "modified_image_path": modified_path
+        })
     else:
         if file2 is None:
             return HTMLResponse("Operasi AND dan XOR memerlukan dua gambar.", status_code=400)
@@ -94,18 +101,59 @@ async def perform_logic_operation(
         np_array2 = np.frombuffer(image_data2, np.uint8)
         img2 = cv2.imdecode(np_array2, cv2.IMREAD_COLOR)
 
-        if operation == "and":
-            result_img = cv2.bitwise_and(img1, img2)
-        elif operation == "xor":
-            result_img = cv2.bitwise_xor(img1, img2)
+        # Cek apakah dimensi sama
+        if img1.shape != img2.shape:
+            # Lakukan crop otomatis ke dimensi terkecil
+            img1_cropped, img2_cropped, final_dim, orig_dim1, orig_dim2 = handle_dimension_mismatch(img1, img2)
+            
+            # Simpan citra yang sudah di-crop
+            img1_cropped_path = save_image(img1_cropped, "img1_cropped")
+            img2_cropped_path = save_image(img2_cropped, "img2_cropped")
+            
+            # Lakukan operasi pada citra yang sudah di-crop
+            if operation == "and":
+                result_img = cv2.bitwise_and(img1_cropped, img2_cropped)
+            elif operation == "xor":
+                result_img = cv2.bitwise_xor(img1_cropped, img2_cropped)
+            
+            modified_path = save_image(result_img, "modified")
+            
+            return templates.TemplateResponse("logic_result.html", {
+                "request": request,
+                "original_image_path": original_path,
+                "img2_path": save_image(img2, "img2_original"),
+                "img1_cropped_path": img1_cropped_path,
+                "img2_cropped_path": img2_cropped_path,
+                "modified_image_path": modified_path,
+                "operation": operation.upper(),
+                "dimension_mismatch": True,
+                "original_dim1": f"{orig_dim1[0]}x{orig_dim1[1]}",
+                "original_dim2": f"{orig_dim2[0]}x{orig_dim2[1]}",
+                "cropped_dim": f"{final_dim[0]}x{final_dim[1]}"
+            })
+        else:
+            # Dimensi sama, lakukan operasi normal
+            if operation == "and":
+                result_img = cv2.bitwise_and(img1, img2)
+            elif operation == "xor":
+                result_img = cv2.bitwise_xor(img1, img2)
+            
+            modified_path = save_image(result_img, "modified")
+            img2_path = save_image(img2, "img2_original")
+            
+            return templates.TemplateResponse("logic_result.html", {
+                "request": request,
+                "original_image_path": original_path,
+                "img2_path": img2_path,
+                "modified_image_path": modified_path,
+                "operation": operation.upper(),
+                "dimension_mismatch": False
+            })
 
-    modified_path = save_image(result_img, "modified")
-
-    return templates.TemplateResponse("result.html", {
-        "request": request,
-        "original_image_path": original_path,
-        "modified_image_path": modified_path
-    })
+# Endpoint untuk menampilkan form operasi logika
+@app.get("/logic_operation_form/", response_class=HTMLResponse)
+async def logic_operation_form(request: Request):
+    return templates.TemplateResponse("logic_operation.html", {"request": request})
 
 # Endpoint ini digunakan untuk mengubah gambar berwarna menjadi grayscale.
 @app.get("/grayscale/", response_class=HTMLResponse)
@@ -270,4 +318,28 @@ def save_color_histogram(image):
     plt.savefig(color_histogram_path)
     plt.close()
     return f"/{color_histogram_path}"
+
+def handle_dimension_mismatch(img1, img2):
+    """
+    Menangani perbedaan dimensi antara dua citra dengan crop ke dimensi terkecil
+    """
+    h1, w1 = img1.shape[:2]
+    h2, w2 = img2.shape[:2]
+    
+    # Ambil dimensi terkecil
+    min_height = min(h1, h2)
+    min_width = min(w1, w2)
+    
+    # Crop kedua citra ke ukuran yang sama (dari pusat)
+    # Untuk img1
+    start_y1 = (h1 - min_height) // 2
+    start_x1 = (w1 - min_width) // 2
+    img1_cropped = img1[start_y1:start_y1+min_height, start_x1:start_x1+min_width]
+    
+    # Untuk img2
+    start_y2 = (h2 - min_height) // 2
+    start_x2 = (w2 - min_width) // 2
+    img2_cropped = img2[start_y2:start_y2+min_height, start_x2:start_x2+min_width]
+    
+    return img1_cropped, img2_cropped, (min_height, min_width), (h1, w1), (h2, w2)
 
