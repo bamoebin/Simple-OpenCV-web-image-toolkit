@@ -1,29 +1,21 @@
-{% extends "base.html" %} {% block title %}Grayscale Image Conversion{% endblock
-%} {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center">Konversi Citra ke Grayscale</h2>
-  <form
-    action="/grayscale/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
-    <div class="mb-3">
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
+{% extends "base.html" %}
+{% block title %}Grayscale Image Conversion{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card section-card">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="fa fa-circle-half-stroke text-secondary me-2"></i>Konversi ke Grayscale</h5>
+        <p class="text-muted small">Unggah citra berwarna untuk diubah menjadi grayscale (1 channel intensitas). Format didukung: JPG, PNG.</p>
+        <form action="/grayscale/" enctype="multipart/form-data" method="post">
+          <div class="mb-3">
+            <label class="form-label" for="grayFile">Pilih Gambar</label>
+            <input id="grayFile" name="file" type="file" accept="image/*" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-secondary w-100"><i class="fa fa-play me-1"></i>Konversi</button>
+        </form>
+      </div>
     </div>
-    <div class="text-center">
-      <input
-        type="submit"
-        value="Konversi ke Grayscale"
-        class="btn btn-primary"
-      />
-    </div>
-  </form>
+  </div>
 </div>
 {% endblock %}

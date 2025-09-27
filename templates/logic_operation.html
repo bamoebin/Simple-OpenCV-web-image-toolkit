@@ -1,17 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Logic Operations{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center">Operasi Logika Bitwise</h2>
-    <p class="text-center text-muted">Lakukan operasi logika (AND, XOR, NOT) pada citra digital</p>
-    
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5><i class="fas fa-calculator"></i> Form Operasi Logika</h5>
-                </div>
-                <div class="card-body">
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card section-card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><i class="fas fa-code-branch text-warning me-2"></i>Operasi Logika Bitwise</h5>
+                <p class="text-muted small">Lakukan operasi logika (AND, XOR, NOT) pada citra digital. Sistem akan auto-crop dari tengah bila ukuran berbeda.</p>
                     <form action="/logic_operation/" enctype="multipart/form-data" method="post">
                         <div class="mb-3">
                             <label for="file1" class="form-label">Gambar Pertama *</label>
@@ -29,14 +24,14 @@
                             </select>
                         </div>
 
-                        <div class="mb-3" id="file2Container" style="display: none;">
+                        <div class="mb-3 d-none" id="file2Container">
                             <label for="file2" class="form-label">Gambar Kedua</label>
                             <input name="file2" type="file" accept="image/*" class="form-control">
                             <div class="form-text">Upload gambar kedua untuk operasi AND/XOR</div>
                         </div>
 
-                        <div class="alert alert-info" role="alert">
-                            <h6><i class="fas fa-info-circle"></i> Informasi Penting:</h6>
+                        <div class="alert alert-info py-2" role="alert">
+                            <h6 class="mb-2"><i class="fas fa-info-circle"></i> Informasi:</h6>
                             <ul class="mb-0">
                                 <li><strong>AND:</strong> Menghasilkan pixel yang ada di kedua gambar</li>
                                 <li><strong>XOR:</strong> Menampilkan perbedaan antara kedua gambar</li>
@@ -44,28 +39,17 @@
                                 <li><strong>Dimensi Berbeda:</strong> Jika kedua gambar memiliki ukuran berbeda, sistem akan secara otomatis melakukan crop dari bagian tengah ke ukuran terkecil</li>
                             </ul>
                         </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-play"></i> Proses Operasi
-                            </button>
-                            <a href="/" class="btn btn-secondary ms-2">
-                                <i class="fas fa-home"></i> Kembali
-                            </a>
-                        </div>
+                        <button type="submit" class="btn btn-warning text-dark w-100"><i class="fas fa-play me-1"></i>Proses Operasi</button>
+                        <div class="text-center mt-2"><a href="/" class="small text-decoration-none"><i class="fas fa-home me-1"></i>Home</a></div>
                     </form>
-                </div>
             </div>
         </div>
     </div>
-
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h6><i class="fas fa-book"></i> Penjelasan Operasi Logika</h6>
-                </div>
+            <div class="card section-card">
                 <div class="card-body">
+                    <h6 class="mb-3"><i class="fas fa-book me-1"></i> Penjelasan Operasi</h6>
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Operasi AND</h6>
@@ -78,7 +62,7 @@
                         <div class="col-md-4">
                             <h6>Operasi NOT</h6>
                             <p class="small">Membalik semua bit pixel (0 menjadi 1, 1 menjadi 0), menghasilkan efek negatif pada gambar.</p>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -86,20 +70,4 @@
     </div>
 </div>
 
-<script>
-function toggleSecondImage() {
-    const operation = document.querySelector('select[name="operation"]').value;
-    const file2Container = document.getElementById('file2Container');
-    const file2Input = document.querySelector('input[name="file2"]');
-    
-    if (operation === 'and' || operation === 'xor') {
-        file2Container.style.display = 'block';
-        file2Input.required = true;
-    } else {
-        file2Container.style.display = 'none';
-        file2Input.required = false;
-        file2Input.value = '';
-    }
-}
-</script>
 {% endblock %}

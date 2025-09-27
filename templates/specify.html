@@ -1,40 +1,26 @@
-{% extends "base.html" %} {% block title %}Histogram Specification{% endblock %}
+{% extends "base.html" %}
+{% block title %}Histogram Specification{% endblock %}
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center">Spesifikasi Histogram Citra</h2>
-  <form
-    action="/specify/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
-    <div class="mb-3">
-      <label for="file">Pilih Gambar yang Akan Diubah:</label>
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card section-card">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="fa fa-sliders text-warning me-2"></i>Spesifikasi Histogram</h5>
+        <p class="text-muted small mb-3">Mencocokkan distribusi intensitas/warna citra sumber agar menyerupai citra referensi (histogram matching / specification).</p>
+        <form action="/specify/" enctype="multipart/form-data" method="post">
+          <div class="mb-3">
+            <label class="form-label" for="srcFile">Gambar Sumber</label>
+            <input id="srcFile" name="file" type="file" accept="image/*" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="refFile">Gambar Referensi</label>
+            <input id="refFile" name="ref_file" type="file" accept="image/*" class="form-control" required />
+          </div>
+          <div class="alert alert-info py-2 small"><i class="fa fa-info-circle me-1"></i>Gunakan gambar referensi dengan tone/warna target yang diinginkan.</div>
+          <button class="btn btn-warning text-dark w-100" type="submit"><i class="fa fa-play me-1"></i>Proses</button>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="ref_file">Pilih Gambar Referensi:</label>
-      <input
-        name="ref_file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="text-center">
-      <input
-        type="submit"
-        value="Spesifikasi Histogram"
-        class="btn btn-primary"
-      />
-    </div>
-  </form>
+  </div>
 </div>
 {% endblock %}

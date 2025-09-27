@@ -1,46 +1,38 @@
-{% extends "base.html" %} {% block title %}Generate Image Histogram{% endblock
-%} {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center">Generate Histogram Citra</h2>
-  <form
-    action="/histogram/"
-    enctype="multipart/form-data"
-    method="post"
-    class="mt-4"
-  >
-    <div class="mb-3">
-      <input
-        name="file"
-        type="file"
-        accept="image/*"
-        class="form-control"
-        required
-      />
-    </div>
-    <div class="text-center">
-      <input type="submit" value="Generate Histogram" class="btn btn-primary" />
-    </div>
-  </form>
-
-  {% if grayscale_histogram_path and color_histogram_path %}
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <h4 class="text-center">Histogram Grayscale</h4>
-      <img
-        src="{{ grayscale_histogram_path }}"
-        alt="Grayscale Histogram"
-        class="img-fluid rounded shadow-lg mb-4"
-      />
-    </div>
-    <div class="col-md-6">
-      <h4 class="text-center">Histogram Berwarna</h4>
-      <img
-        src="{{ color_histogram_path }}"
-        alt="Color Histogram"
-        class="img-fluid rounded shadow-lg mb-4"
-      />
+{% extends "base.html" %}
+{% block title %}Generate Image Histogram{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card section-card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="fa fa-chart-column text-primary me-2"></i>Generate Histogram</h5>
+        <p class="text-muted small">Upload citra untuk melihat distribusi intensitas (grayscale) dan distribusi kanal RGB.</p>
+        <form action="/histogram/" enctype="multipart/form-data" method="post">
+          <div class="mb-3">
+            <label class="form-label" for="histFile">Pilih Gambar</label>
+            <input id="histFile" name="file" type="file" accept="image/*" class="form-control" required />
+          </div>
+          <button class="btn btn-primary w-100" type="submit"><i class="fa fa-play me-1"></i>Proses</button>
+        </form>
+      </div>
     </div>
   </div>
-  {% endif %}
 </div>
+
+{% if grayscale_histogram_path and color_histogram_path %}
+<div class="row g-4 mt-1">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><strong>Histogram Grayscale</strong></div>
+      <div class="card-body text-center"><img src="{{ grayscale_histogram_path }}" alt="Histogram Grayscale" class="img-fluid rounded"></div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><strong>Histogram Berwarna (RGB)</strong></div>
+      <div class="card-body text-center"><img src="{{ color_histogram_path }}" alt="Histogram Warna" class="img-fluid rounded"></div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

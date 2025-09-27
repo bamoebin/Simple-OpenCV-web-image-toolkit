@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Logic Operation Result{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center">Hasil Operasi {{ operation }}</h2>
+<div class="page-wrapper">
+    <h4 class="mb-4"><i class="fas fa-code-branch text-warning me-2"></i>Hasil Operasi {{ operation }}</h4>
     
     {% if dimension_mismatch %}
     <div class="alert alert-warning" role="alert">
@@ -14,62 +14,62 @@
     </div>
     {% endif %}
 
-    <div class="row">
+    <div class="row g-4">
         <!-- Gambar Original 1 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Gambar 1 (Original)</h5>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header py-2">
+                    <strong>Gambar 1 (Original)</strong>
                     {% if dimension_mismatch %}
                     <small class="text-muted">Dimensi: {{ original_dim1 }}</small>
                     {% endif %}
                 </div>
-                <div class="card-body text-center">
-                    <img src="{{ original_image_path }}" alt="Original Image 1" class="img-fluid" style="max-height: 300px;">
+                <div class="card-body text-center p-2">
+                    <img src="{{ original_image_path }}" alt="Gambar 1" class="img-fluid img-fit-limited">
                 </div>
             </div>
         </div>
 
         <!-- Gambar Original 2 -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Gambar 2 (Original)</h5>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header py-2">
+                    <strong>Gambar 2 (Original)</strong>
                     {% if dimension_mismatch %}
                     <small class="text-muted">Dimensi: {{ original_dim2 }}</small>
                     {% endif %}
                 </div>
-                <div class="card-body text-center">
-                    <img src="{{ img2_path }}" alt="Original Image 2" class="img-fluid" style="max-height: 300px;">
+                <div class="card-body text-center p-2">
+                    <img src="{{ img2_path }}" alt="Gambar 2" class="img-fluid img-fit-limited">
                 </div>
             </div>
         </div>
     </div>
 
     {% if dimension_mismatch %}
-    <div class="row">
+    <div class="row g-4">
         <!-- Gambar 1 Cropped -->
-        <div class="col-md-6 mb-4">
-            <div class="card border-info">
-                <div class="card-header bg-info text-white">
-                    <h5>Gambar 1 (Cropped)</h5>
-                    <small>Dimensi: {{ cropped_dim }}</small>
+        <div class="col-md-6">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white py-2">
+                    <strong>Gambar 1 (Cropped)</strong>
+                    <div class="small">Dimensi: {{ cropped_dim }}</div>
                 </div>
-                <div class="card-body text-center">
-                    <img src="{{ img1_cropped_path }}" alt="Cropped Image 1" class="img-fluid" style="max-height: 300px;">
+                <div class="card-body text-center p-2">
+                    <img src="{{ img1_cropped_path }}" alt="Gambar 1 cropped" class="img-fluid img-fit-limited">
                 </div>
             </div>
         </div>
 
         <!-- Gambar 2 Cropped -->
-        <div class="col-md-6 mb-4">
-            <div class="card border-info">
-                <div class="card-header bg-info text-white">
-                    <h5>Gambar 2 (Cropped)</h5>
-                    <small>Dimensi: {{ cropped_dim }}</small>
+        <div class="col-md-6">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white py-2">
+                    <strong>Gambar 2 (Cropped)</strong>
+                    <div class="small">Dimensi: {{ cropped_dim }}</div>
                 </div>
-                <div class="card-body text-center">
-                    <img src="{{ img2_cropped_path }}" alt="Cropped Image 2" class="img-fluid" style="max-height: 300px;">
+                <div class="card-body text-center p-2">
+                    <img src="{{ img2_cropped_path }}" alt="Gambar 2 cropped" class="img-fluid img-fit-limited">
                 </div>
             </div>
         </div>
@@ -77,38 +77,30 @@
     {% endif %}
 
     <!-- Hasil Operasi -->
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-12">
-            <div class="card border-success">
-                <div class="card-header bg-success text-white">
-                    <h5><i class="fas fa-star"></i> Hasil Operasi {{ operation }}</h5>
-                    {% if dimension_mismatch %}
-                    <small>Dimensi: {{ cropped_dim }}</small>
-                    {% endif %}
+            <div class="card border-success h-100">
+                <div class="card-header bg-success text-white py-2">
+                    <strong><i class="fas fa-star"></i> Hasil Operasi {{ operation }}</strong>
+                    {% if dimension_mismatch %}<div class="small">Dimensi: {{ cropped_dim }}</div>{% endif %}
                 </div>
-                <div class="card-body text-center">
-                    <img src="{{ modified_image_path }}" alt="Result Image" class="img-fluid" style="max-height: 400px;">
+                <div class="card-body text-center p-2">
+                    <img src="{{ modified_image_path }}" alt="Hasil" class="img-fluid img-fit-large">
                 </div>
             </div>
         </div>
     </div>
 
     <div class="text-center mt-4">
-        <a href="/" class="btn btn-primary">
-            <i class="fas fa-home"></i> Kembali ke Home
-        </a>
-        <a href="/logic_operation_form/" class="btn btn-secondary">
-            <i class="fas fa-redo"></i> Operasi Logika Lain
-        </a>
+        <a href="/" class="btn btn-secondary"><i class="fas fa-home me-1"></i>Home</a>
+        <a href="/logic_operation_form/" class="btn btn-primary ms-2"><i class="fas fa-redo me-1"></i>Operasi Lain</a>
     </div>
 
     {% if dimension_mismatch %}
     <div class="mt-4">
-        <div class="card">
-            <div class="card-header">
-                <h6><i class="fas fa-lightbulb"></i> Informasi Teknis</h6>
-            </div>
+        <div class="card mt-3">
             <div class="card-body">
+                <h6 class="mb-2"><i class="fas fa-lightbulb me-1"></i> Informasi Teknis</h6>
                 <ul class="list-unstyled">
                     <li><strong>Operasi:</strong> {{ operation }} Bitwise</li>
                     <li><strong>Metode Crop:</strong> Center Crop (dari bagian tengah)</li>

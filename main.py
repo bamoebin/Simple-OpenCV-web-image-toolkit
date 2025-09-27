@@ -9,6 +9,7 @@ from skimage.exposure import match_histograms  # pastikan paket scikit-image sud
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+import notebook_ops
 
 app = FastAPI()
 
@@ -342,4 +343,51 @@ def handle_dimension_mismatch(img1, img2):
     img2_cropped = img2[start_y2:start_y2+min_height, start_x2:start_x2+min_width]
     
     return img1_cropped, img2_cropped, (min_height, min_width), (h1, w1), (h2, w2)
+
+
+# ===== Notebook-derived operations =====
+@app.get("/notebook_ops/", response_class=HTMLResponse)
+async def notebook_ops_form(request: Request):
+    # Render a page with a form to choose operation and parameters
+    return templates.TemplateResponse("notebook_ops.html", {"request": request})
+
+
+@app.post("/notebook_ops/", response_class=HTMLResponse)
+async def run_notebook_ops(
+    request: Request,
+    file: UploadFile = File(...),
+    operation: str = Form(...),
+    kernel_type: str = Form(None),
+    padding_size: int = Form(None),
+    radius: int = Form(None),
+):
+    image_data = await file.read()
+    np_array = np.frombuffer(image_data, np.uint8)
+    img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
+
+    original_path = save_image(img, "original")
+
+    kwargs = {
+        "kernel_type": kernel_type,
+        "padding_size": padding_size,
+        "radius": radius,
+    }
+    # remove None values
+    kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
+    try:
+        result_img = notebook_ops.process_image(operation, img, **kwargs)
+    except Exception as e:
+        return HTMLResponse(f"Gagal memproses operasi: {e}", status_code=400)
+
+    modified_path = save_image(result_img, "notebook")
+
+    return templates.TemplateResponse(
+        "result.html",
+        {
+            "request": request,
+            "original_image_path": original_path,
+            "modified_image_path": modified_path,
+        },
+    )
 

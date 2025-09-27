@@ -1,18 +1,34 @@
-{% extends "base.html" %} {% block title %}Statistik Citra{% endblock %} {%
-block content %}
-<div class="container mt-5">
-  <h2 class="text-center">Statistik Citra</h2>
-  <div class="text-center">
-    <img
-      src="{{ image_path }}"
-      alt="Image for Statistics"
-      class="img-fluid rounded shadow-lg mb-4"
-    />
-  </div>
-  <h4 class="text-center">Rata-rata Intensitas Piksel: {{ mean_intensity }}</h4>
-  <h4 class="text-center">Standar Deviasi (Kontras): {{ std_deviation }}</h4>
-  <div class="text-center mt-4">
-    <a href="/" class="btn btn-secondary">Kembali ke Home</a>
+{% extends "base.html" %}
+{% block title %}Statistik Citra{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card section-card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="fa fa-chart-line text-info me-2"></i>Statistik Citra</h5>
+        <div class="text-center mb-4">
+          <img src="{{ image_path }}" alt="Citra untuk statistik" class="img-fluid rounded shadow-sm img-fit-large" />
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-light h-100">
+              <div class="text-muted small">Rata-rata Intensitas</div>
+              <div class="h4 mb-0">{{ '%.2f'|format(mean_intensity) }}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-light h-100">
+              <div class="text-muted small">Standar Deviasi (Kontras)</div>
+              <div class="h4 mb-0">{{ '%.2f'|format(std_deviation) }}</div>
+            </div>
+          </div>
+        </div>
+        <p class="small text-muted mb-0">Standar deviasi tinggi menandakan kontras yang lebih besar; nilai rata-rata mendekati 0/255 menunjukkan gambar sangat gelap/terang.</p>
+        <div class="text-center mt-4">
+          <a href="/" class="btn btn-secondary"><i class="fa fa-home me-1"></i>Home</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

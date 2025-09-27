@@ -1,80 +1,93 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<div class="container mt-5">
-  <h2 class="text-center">Unggah Citra Digital untuk Operasi yang Tersediaa</h2>
-  <form action="/upload/" enctype="multipart/form-data" method="post" class="mt-4">
-    <div class="mb-3">
-      <input name="file" type="file" accept="image/*" class="form-control" required />
-    </div>
-    <div class="text-center">
-      <input type="submit" value="Upload" class="btn btn-primary" />
-    </div>
-  </form>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="pt-4 pb-5">
+  <div class="text-center mb-5">
+    <h1 class="h3 fw-bold mb-1">Pengolahan Citra Digital</h1>
+    <p class="text-muted mb-0">Unggah gambar dan jalankan berbagai operasi dasar secara interaktif.</p>
+  </div>
 
-  <h2 class="text-center mt-5">Operasi Aritmatika pada Citra</h2>
-  <form action="/operation/" enctype="multipart/form-data" method="post" class="mt-4">
-    <div class="mb-3">
-      <label for="file">Pilih Gambar:</label>
-      <input name="file" type="file" accept="image/*" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label for="operation">Pilih Operasi:</label>
-      <select name="operation" class="form-select" required>
-        <option value="add">Tambah</option>
-        <option value="subtract">Kurang</option>
-        <option value="max">Max</option>
-        <option value="min">Min</option>
-        <option value="inverse">Inverse</option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="value" class="form-label">Nilai Operasi:</label>
-      <div class="d-flex justify-content-between text-muted small mb-1">
-        <span>0 (Min)</span>
-        <span>50 (Default)</span>
-        <span>100 (Max)</span>
-      </div>
-      <input type="range" class="form-range" min="0" max="100" step="1" name="value" id="value" value="50" />
-      <div class="text-center mt-2">
-        <span class="badge bg-primary">Nilai Terpilih: <output id="valueOutput">50</output></span>
-      </div>
-      <div class="form-text">
-        <small><i class="fas fa-info-circle"></i> Nilai ini akan ditambahkan/dikurangkan pada setiap pixel citra (untuk
-          Add/Subtract) atau digunakan sebagai threshold (untuk Max/Min)</small>
+  <div class="row g-4">
+    <!-- Upload Only -->
+    <div class="col-md-6 col-xl-4">
+      <div class="card section-card h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3"><i class="fa fa-upload text-primary me-2"></i>Upload Gambar</h5>
+          <form action="/upload/" enctype="multipart/form-data" method="post">
+            <div class="mb-3">
+              <input name="file" type="file" accept="image/*" class="form-control" required />
+            </div>
+            <button class="btn btn-primary w-100" type="submit"><i class="fa fa-cloud-arrow-up me-1"></i>Upload</button>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="text-center">
-      <input type="submit" value="Lakukan Operasi" class="btn btn-primary" />
-    </div>
-  </form>
 
-  <h2 class="text-center mt-5">Operasi Logika pada Citra</h2>
-  <div class="text-center mt-4">
-    <a href="/logic_operation_form/" class="btn btn-primary btn-lg">
-      <i class="fas fa-calculator"></i> KLIK DI SINI untuk Operasi Logika (AND, XOR, NOT)
-    </a>
-    <p class="text-muted mt-2">Operasi bitwise dengan handling otomatis untuk dimensi berbeda</p>
+    <!-- Arithmetic Operations -->
+    <div class="col-md-6 col-xl-4">
+      <div class="card section-card h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3"><i class="fa fa-calculator text-success me-2"></i>Operasi Aritmatika</h5>
+          <form action="/operation/" enctype="multipart/form-data" method="post">
+            <div class="mb-3">
+              <label class="form-label" for="arithFile">Gambar</label>
+              <input id="arithFile" name="file" type="file" accept="image/*" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="operationSelect">Operasi</label>
+              <select id="operationSelect" name="operation" class="form-select" required>
+                <option value="add">Tambah (+)</option>
+                <option value="subtract">Kurang (-)</option>
+                <option value="max">Max</option>
+                <option value="min">Min</option>
+                <option value="inverse">Inverse</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="value">Nilai Operasi</label>
+              <input type="range" class="form-range" min="0" max="100" step="1" name="value" id="value" value="50" />
+              <div class="d-flex justify-content-between small text-muted"><span>0</span><span><output id="valueOutput">50</output></span><span>100</span></div>
+              <div class="form-text">Digunakan sebagai offset (Add/Subtract) atau threshold (Max/Min).</div>
+            </div>
+            <button class="btn btn-success w-100" type="submit"><i class="fa fa-play me-1"></i>Proses</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logic + Statistics (stacked) -->
+    <div class="col-md-12 col-xl-4">
+      <div class="d-flex flex-column gap-4 h-100">
+        <div class="card section-card flex-fill">
+          <div class="card-body">
+            <h5 class="card-title mb-3"><i class="fa fa-code-branch text-warning me-2"></i>Operasi Logika</h5>
+            <p class="text-muted small mb-3">Bitwise AND, XOR, dan NOT (auto-crop jika dimensi berbeda).</p>
+            <a href="/logic_operation_form/" class="btn btn-warning w-100 text-dark"><i class="fa fa-arrow-right me-1"></i>Buka Form Operasi Logika</a>
+          </div>
+        </div>
+        <div class="card section-card flex-fill">
+          <div class="card-body">
+            <h5 class="card-title mb-3"><i class="fa fa-chart-simple text-info me-2"></i>Statistik Citra</h5>
+            <form action="/statistics/" enctype="multipart/form-data" method="post">
+              <div class="mb-3">
+                <label class="form-label" for="statsFile">Gambar</label>
+                <input id="statsFile" name="file" type="file" accept="image/*" class="form-control" required />
+              </div>
+              <button class="btn btn-info text-white w-100" type="submit"><i class="fa fa-sigma me-1"></i>Hitung Statistik</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">Shortcut</div>
+  <div class="row g-3">
+    <div class="col-6 col-md-3"><a href="/grayscale/" class="btn btn-outline-secondary w-100"><i class="fa fa-circle-half-stroke me-1"></i>Grayscale</a></div>
+    <div class="col-6 col-md-3"><a href="/histogram/" class="btn btn-outline-secondary w-100"><i class="fa fa-chart-column me-1"></i>Histogram</a></div>
+    <div class="col-6 col-md-3"><a href="/equalize/" class="btn btn-outline-secondary w-100"><i class="fa fa-equals me-1"></i>Equalize</a></div>
+    <div class="col-6 col-md-3"><a href="/specify/" class="btn btn-outline-secondary w-100"><i class="fa fa-sliders me-1"></i>Specify</a></div>
   </div>
 </div>
-</form>
 
-<h2 class="text-center mt-5">Statistik Citra</h2>
-<form action="/statistics/" enctype="multipart/form-data" method="post" class="mt-4">
-  <div class="mb-3">
-    <label for="file">Pilih Gambar:</label>
-    <input name="file" type="file" accept="image/*" class="form-control" required />
-  </div>
-  <div class="text-center">
-    <input type="submit" value="Hitung Statistik" class="btn btn-primary" />
-  </div>
-</form>
-
-<script>
-  const slider = document.getElementById("value");
-  const output = document.getElementById("valueOutput");
-  slider.addEventListener("input", function () {
-    output.textContent = slider.value;
-  });
-</script>
-</div>
 {% endblock %}

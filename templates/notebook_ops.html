@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Notebook Operations{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card section-card">
+      <div class="card-body">
+        <h5 class="card-title mb-3"><i class="fa fa-gears text-primary me-2"></i>Operasi Notebook</h5>
+        <p class="text-muted small">Kumpulan operasi spasial dan frekuensi yang diambil dari notebook: konvolusi (berbagai kernel), padding, transformasi Fourier, dan reduksi noise periodik.</p>
+        <form action="/notebook_ops/" enctype="multipart/form-data" method="post">
+          <div class="mb-3">
+            <label class="form-label" for="file">Pilih Gambar</label>
+            <input id="file" name="file" type="file" accept="image/*" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="operation">Pilih Operasi</label>
+            <select name="operation" class="form-select" id="operation" required>
+              <option value="convolution">Convolution (Average/Gaussian/Sharpen/Edge)</option>
+              <option value="zero_padding">Zero Padding</option>
+              <option value="fourier_transform">Fourier Transform</option>
+              <option value="reduce_periodic_noise">Reduce Periodic Noise</option>
+            </select>
+          </div>
+          <div id="params">
+            <div class="mb-3 d-none" data-op="convolution">
+              <label class="form-label" for="kernel_type">Kernel Type</label>
+              <select id="kernel_type" name="kernel_type" class="form-select">
+                <option value="average">Average (Mean / Low-pass)</option>
+                <option value="gaussian">Gaussian Blur (Low-pass)</option>
+                <option value="sharpen">Sharpen (Band-emphasis)</option>
+                <option value="edge">Edge (High-pass)</option>
+              </select>
+            </div>
+            <div class="mb-3 d-none" data-op="zero_padding">
+              <label class="form-label" for="padding_size">Padding Size</label>
+              <input id="padding_size" type="number" class="form-control" name="padding_size" value="10" />
+            </div>
+            <div class="mb-3 d-none" data-op="reduce_periodic_noise">
+              <label class="form-label" for="radius">Radius</label>
+              <input id="radius" type="number" class="form-control" name="radius" value="30" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100"><i class="fa fa-play me-1"></i>Proses</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
